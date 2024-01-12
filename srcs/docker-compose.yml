@@ -1,0 +1,75 @@
+version: '3'
+
+services:
+  nginx:
+    build: 
+      context: ./requirements/nginx
+      dockerfile: Dockerfile
+    container_name: nginx_inception
+    volumes:
+      - ./requirements/nginx/conf/nginx.conf:/etc/nginx/conf.d/default.conf
+      - ./requirements/nginx/certs/server.crt:/etc/nginx/ssl/nginx.crt
+      - ./requirements/nginx/certs/server.key:/etc/nginx/ssl/nginx.key
+      - wordpress_data:/var/www/html
+    ports:
+      - "443:443"
+    networks:
+      - inception
+    depends_on:
+      - wordpress
+    restart: unless-stopped
+
+  mariadb:
+    build: 
+      args:
+        - MYSQL_DATABASE=${DB_NAME}
+        - MYSQL_USER=${DB_USER}
+        - MYSQL_PASSWORD=${DB_PASSWORD}
+        - MYSQL_ROOT_PASSWORD=${DB_ROOT_PASSWORD}
+      context: ./requirements/mariadb
+      dockerfile: Dockerfile
+    container_name: mariadb_inception
+    volumes:
+      - mariadb_data:/var/lib/mysql
+    networks:
+      - inception
+    env_file:
+      - .env
+    ports:
+      - "3306:3306"
+    restart: unless-stopped
+
+  wordpress:
+    build: 
+      context: ./requirements/wordpress
+      dockerfile: Dockerfile
+    container_name: wordpress_inception
+    volumes:
+      - wordpress_data:/var/www/html
+    depends_on:
+      - mariadb
+    networks:
+      - inception
+    env_file:
+      - .env
+    restart: unless-stopped
+
+
+
+volumes:
+  wordpress_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/panesico/data/html
+      o: bind
+  mariadb_data:
+    driver: local
+    driver_opts:
+      type: none
+      device: /home/panesico/data/database
+      o: bind
+
+networks:
+  inception:
+    driver: bridge
