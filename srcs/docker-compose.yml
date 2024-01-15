@@ -7,7 +7,6 @@ services:
       dockerfile: Dockerfile
     container_name: nginx_inception
     volumes:
-      - nginx_data:/etc/nginx/ssl
       - wordpress_data:/var/www/html
     ports:
       - "443:443"
@@ -59,19 +58,13 @@ volumes:
     driver: local
     driver_opts:
       type: none
-      device: /home/${USER}/data/wordpress
+      device: ~/data/wordpress
       o: bind
   mariadb_data:
     driver: local
     driver_opts:
       type: none
-      device: /home/${USER}/data/mariadb
-      o: bind
-  nginx_data:
-    driver: local
-    driver_opts:
-      type: none
-      device: /home/${USER}/data/nginx
+      device: ~/data/mariadb
       o: bind
 
 networks:

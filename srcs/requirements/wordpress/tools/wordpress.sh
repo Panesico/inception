@@ -1,6 +1,6 @@
 #!/bin/bash
 
-if [ ! -f /var/www/html/wp-comfig.php ]; then
+if [ ! -f /var/www/html/wp-config.php ]; then
 
 curl -O https://raw.githubusercontent.com/wp-cli/builds/gh-pages/phar/wp-cli.phar
 chmod +x wp-cli.phar
