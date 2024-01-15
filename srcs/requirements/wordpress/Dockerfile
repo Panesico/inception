@@ -18,7 +18,7 @@ RUN useradd wp_user && groupadd wp_group && usermod -aG wp_group wp_user
 # Create the /var/www/html/ directory and change its ownership
 RUN mkdir -p /var/www/html && chown wp_user:wp_group /var/www/html
 
-COPY conf/php-fpm.conf /etc/php/7.3/fpm/php-fpm.conf
+COPY conf/php-fpm.conf /etc/php/7.4/fpm/php-fpm.conf
 COPY ./tools/wordpress.sh /scripts/wordpress.sh
 COPY ./conf/wp-config.php /scripts/wp-config.php
 
