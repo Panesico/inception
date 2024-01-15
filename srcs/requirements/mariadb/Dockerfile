@@ -29,7 +29,7 @@ EXPOSE 3306
 
 RUN service mariadb start && \
     echo "CREATE DATABASE IF NOT EXISTS ${MYSQL_DATABASE} ;" > msql_db.sql && \
-    echo "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}';" >> msql_db.sql && \
+    echo "CREATE USER IF NOT EXISTS '${MYSQL_USER}'@'%' IDENTIFIED BY '${MYSQL_PASSWORD}' ;" >> msql_db.sql && \
     echo "GRANT ALL PRIVILEGES ON ${MYSQL_DATABASE}.* TO '${MYSQL_USER}'@'%' ;" >> msql_db.sql && \
     echo "FLUSH PRIVILEGES;" >> msql_db.sql && \
     echo "ALTER USER 'root'@'localhost' IDENTIFIED BY '${MYSQL_ROOT_PASSWORD}' ;" >> msql_db.sql && \
@@ -37,4 +37,4 @@ RUN service mariadb start && \
 
 
 # Start MariaDB service
-CMD ["mysqld_safe"]
+CMD ["mysqld"]
